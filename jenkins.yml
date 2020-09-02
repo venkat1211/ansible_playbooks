@@ -1,0 +1,21 @@
+---
+- hosts: appserver
+  become: yes
+  tasks: 
+  - name: install openjdk8
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+  - name: install tamcat
+    yum:
+      name: tomcat
+      state: present
+  - name: download jenkins to wepapp folder
+    get_url:
+      url: https://mirrors.tuna.tsinghua.edu.cn/jenkins/war-stable/2.235.5/jenkins.war
+      dest: /usr/share/tomcat/webapps/jenkins.war 
+  - name: start the service
+    service:
+      name: tomcat
+      state: started
+      enabled: yes
